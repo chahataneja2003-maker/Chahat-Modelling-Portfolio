@@ -230,7 +230,8 @@
       <!-- Featured Carlton London Beauty Portrait Stage -->
       <div class="smart-img-wrap relative rounded-bento-inner aspect-[4/4.2] sm:aspect-[16/9.5] w-full group" data-slot="carlton_main">
         <img
-          src="images/carlton-main.jpg"
+          src="Modelling portfolio/carlton-main.jpg.JPG"
+          data-base="carlton-main"
           alt="Chahat Aneja — Carlton London Beauty Campaign Still"
           class="w-full h-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-105 cursor-pointer"
           onclick="openLightboxBySlot('carlton_main')"
@@ -261,7 +262,8 @@
           title="Click to verify 42.3K Views on @carltonlondonbeauty"
         >
           <img
-            src="images/carlton-proof.jpg"
+            src="Modelling portfolio/carlton-proof.jpg.jpeg"
+            data-base="carlton-proof"
             alt="Carlton London 42.3K Views Proof"
             class="w-full h-full object-cover object-right rounded-xl"
           />
@@ -277,7 +279,8 @@
         <a href="#carlton-proof" class="absolute bottom-3.5 right-3.5 sm:bottom-4 sm:right-4 bg-burgundy hover:bg-burgundy-light transition-colors text-offwhite p-2 pr-4 rounded-2xl flex items-center gap-3 shadow-2xl border border-offwhite/15 max-w-[280px] sm:max-w-xs">
           <div class="smart-img-wrap w-11 h-11 rounded-xl shrink-0 border border-offwhite/25" data-slot="recent_closeup">
             <img
-              src="images/recent-closeup.jpg"
+              src="Modelling portfolio/recent-closeup.jpg.jpeg"
+              data-base="recent-closeup"
               alt="Chahat Aneja 2026 Digital"
               class="w-full h-full object-cover object-top"
             />
@@ -301,7 +304,8 @@
           >
             <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="jewellery_earcuff">
               <img
-                src="images/jewellery-earcuff.jpg"
+                src="Modelling portfolio/jewellery-earcuff.jpg.jpeg"
+                data-base="jewellery-earcuff"
                 alt="Jewellery Campaign Highlight"
                 class="w-full h-full rounded-full object-cover object-center"
               />
@@ -317,7 +321,8 @@
           >
             <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="lighting_pearl">
               <img
-                src="images/lighting-pearl.jpg"
+                src="Modelling portfolio/lighting-pearl.jpg.jpeg"
+                data-base="lighting-pearl"
                 alt="Editorial Spotlight & Pearl Highlight"
                 class="w-full h-full rounded-full object-cover object-[center_22%]"
               />
@@ -333,7 +338,8 @@
           >
             <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="recent_waistcoat">
               <img
-                src="images/recent-waistcoat.jpg"
+                src="Modelling portfolio/recent-waistcoat.jpg.jpeg"
+                data-base="recent-waistcoat"
                 alt="Current 2026 Lookbook Highlight"
                 class="w-full h-full rounded-full object-cover object-top"
               />
@@ -430,7 +436,8 @@
         <div class="lg:col-span-7 flex flex-col justify-between space-y-3">
           <div class="smart-img-wrap relative rounded-bento-inner aspect-[16/10] w-full group cursor-pointer shadow-md" data-slot="carlton_main" onclick="openLightboxBySlot('carlton_main')">
             <img
-              src="images/carlton-main.jpg"
+              src="Modelling portfolio/carlton-main.jpg.JPG"
+              data-base="carlton-main"
               alt="Chahat Aneja applying eyeshadow for Carlton London Beauty"
               class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
             />
@@ -468,7 +475,8 @@
 
           <div class="smart-img-wrap relative rounded-2xl aspect-[4/4.6] w-full cursor-pointer group border border-offwhite/15" data-slot="carlton_proof" onclick="openLightboxBySlot('carlton_proof')">
             <img
-              src="images/carlton-proof.jpg"
+              src="Modelling portfolio/carlton-proof.jpg.jpeg"
+              data-base="carlton-proof"
               alt="Screenshot of @carltonlondonbeauty official Instagram reels grid showing 42.3K views"
               class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
@@ -712,12 +720,35 @@
 
   <!-- JAVASCRIPT: Categorized 14-Photo Lookbook, Lightbox, Ambient Bokeh & Casting Game -->
   <script>
-    /* 1. MASTER PORTFOLIO DATA (Clean GitHub Pages Relative Paths inside /images/) */
+    /* SMART PATH RESOLVER: Automatically resolves your exact GitHub folder ("Modelling portfolio/")
+       and double extensions (.jpg.JPG, .jpg.jpeg, .jpg.png) as well as standard .jpg/.jpeg/.png files */
+    const PHOTO_FOLDERS = ['Modelling portfolio/', 'images/', './'];
+    const PHOTO_EXTENSIONS = ['.jpg.jpeg', '.jpg.JPG', '.jpg.png', '.jpg', '.jpeg', '.JPG', '.JPEG', '.png', '.PNG'];
+
+    function getCandidateUrls(baseName, preferredExt) {
+      const urls = [];
+      for (const folder of PHOTO_FOLDERS) {
+        if (preferredExt) {
+          urls.push(`${folder}${baseName}${preferredExt}`);
+        }
+        for (const ext of PHOTO_EXTENSIONS) {
+          const candidate = `${folder}${baseName}${ext}`;
+          if (!urls.includes(candidate)) {
+            urls.push(candidate);
+          }
+        }
+      }
+      return urls;
+    }
+
+    /* 1. MASTER PORTFOLIO DATA (Mapped directly to your GitHub "Modelling portfolio" folder) */
     const portfolioItems = [
       // 1. Carlton London Beauty Campaign & Views Proof (2)
       {
         slot: 'carlton_main',
-        file: 'images/carlton-main.jpg',
+        baseName: 'carlton-main',
+        preferredExt: '.jpg.JPG',
+        file: 'Modelling portfolio/carlton-main.jpg.JPG',
         category: 'carlton',
         badge: 'Carlton London • 1 Yr Ago',
         badgeStyle: 'bg-burgundy text-offwhite',
@@ -727,7 +758,9 @@
       },
       {
         slot: 'carlton_proof',
-        file: 'images/carlton-proof.jpg',
+        baseName: 'carlton-proof',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/carlton-proof.jpg.jpeg',
         category: 'carlton',
         badge: '42.3K Views Proof',
         badgeStyle: 'bg-burgundy text-offwhite',
@@ -739,7 +772,9 @@
       // 2. Startup Jewellery Shoot (2)
       {
         slot: 'jewellery_earcuff',
-        file: 'images/jewellery-earcuff.jpg',
+        baseName: 'jewellery-earcuff',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/jewellery-earcuff.jpg.jpeg',
         category: 'jewellery',
         badge: 'Jewellery Shoot • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -749,7 +784,9 @@
       },
       {
         slot: 'jewellery_heartstud',
-        file: 'images/jewellery-heartstud.jpg',
+        baseName: 'jewellery-heartstud',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/jewellery-heartstud.jpg.jpeg',
         category: 'jewellery',
         badge: 'Jewellery Shoot • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -761,7 +798,9 @@
       // 3. College Editorial & Lighting Project (5)
       {
         slot: 'lighting_double',
-        file: 'images/lighting-double.jpg',
+        baseName: 'lighting-double',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/lighting-double.jpg.jpeg',
         category: 'lighting',
         badge: 'Editorial & Lighting • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -771,7 +810,9 @@
       },
       {
         slot: 'lighting_sunset_one',
-        file: 'images/lighting-sunset-1.jpg',
+        baseName: 'lighting-sunset-1',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/lighting-sunset-1.jpg.jpeg',
         category: 'lighting',
         badge: 'Editorial & Lighting • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -781,7 +822,9 @@
       },
       {
         slot: 'lighting_sunset_two',
-        file: 'images/lighting-sunset-2.jpg',
+        baseName: 'lighting-sunset-2',
+        preferredExt: '.jpg.png',
+        file: 'Modelling portfolio/lighting-sunset-2.jpg.png',
         category: 'lighting',
         badge: 'Editorial & Lighting • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -791,7 +834,9 @@
       },
       {
         slot: 'lighting_pearl',
-        file: 'images/lighting-pearl.jpg',
+        baseName: 'lighting-pearl',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/lighting-pearl.jpg.jpeg',
         category: 'lighting',
         badge: 'Editorial & Lighting • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -801,7 +846,9 @@
       },
       {
         slot: 'lighting_mirror_knit',
-        file: 'images/lighting-mirror-knit.jpg',
+        baseName: 'lighting-mirror-knit',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/lighting-mirror-knit.jpg.jpeg',
         category: 'lighting',
         badge: 'Editorial & Lighting • Archive',
         badgeStyle: 'bg-espresso/85 text-offwhite',
@@ -813,7 +860,9 @@
       // 4. Recent Selfies & Current Look (5)
       {
         slot: 'recent_closeup',
-        file: 'images/recent-closeup.jpg',
+        baseName: 'recent-closeup',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/recent-closeup.jpg.jpeg',
         category: 'current',
         badge: 'Latest 2026 Look',
         badgeStyle: 'bg-emerald-900 text-offwhite',
@@ -823,7 +872,9 @@
       },
       {
         slot: 'recent_waistcoat',
-        file: 'images/recent-waistcoat.jpg',
+        baseName: 'recent-waistcoat',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/recent-waistcoat.jpg.jpeg',
         category: 'current',
         badge: 'Latest 2026 Look',
         badgeStyle: 'bg-emerald-900 text-offwhite',
@@ -833,7 +884,9 @@
       },
       {
         slot: 'recent_fulllength',
-        file: 'images/recent-fulllength.jpg',
+        baseName: 'recent-fulllength',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/recent-fulllength.jpg.jpeg',
         category: 'current',
         badge: 'Latest 2026 Look',
         badgeStyle: 'bg-emerald-900 text-offwhite',
@@ -843,7 +896,9 @@
       },
       {
         slot: 'recent_redmirror',
-        file: 'images/recent-redmirror.jpg',
+        baseName: 'recent-redmirror',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/recent-redmirror.jpg.jpeg',
         category: 'current',
         badge: 'Latest 2026 Look',
         badgeStyle: 'bg-emerald-900 text-offwhite',
@@ -853,7 +908,9 @@
       },
       {
         slot: 'recent_indoor_wavy',
-        file: 'images/recent-indoor-wavy.jpg',
+        baseName: 'recent-indoor-wavy',
+        preferredExt: '.jpg.jpeg',
+        file: 'Modelling portfolio/recent-indoor-wavy.jpg.jpeg',
         category: 'current',
         badge: 'Latest 2026 Look',
         badgeStyle: 'bg-emerald-900 text-offwhite',
@@ -880,6 +937,7 @@
         card.innerHTML = `
           <img
             src="${item.file}"
+            data-base="${item.baseName}"
             alt="${item.title}"
             loading="lazy"
             class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
@@ -905,20 +963,33 @@
       bindImageHandlers();
     }
 
-    /* 3. GRACEFUL IMAGE FALLBACK HANDLER */
+    /* 3. MULTI-PATH & EXTENSION AUTO-RESOLVER WITH FALLBACK */
     function bindImageHandlers() {
       document.querySelectorAll('.smart-img-wrap').forEach((wrap) => {
         const img = wrap.querySelector('img');
         if (!img) return;
 
+        const baseName = img.dataset.base;
+        const item = portfolioItems.find((p) => p.baseName === baseName);
+        const candidates = baseName ? getCandidateUrls(baseName, item ? item.preferredExt : '') : [img.getAttribute('src')];
+        let attemptIndex = 0;
+
         img.onload = () => {
           img.classList.remove('is-broken');
           wrap.classList.remove('show-fallback');
+          if (item && img.getAttribute('src')) {
+            item.resolvedUrl = img.getAttribute('src');
+          }
         };
 
         img.onerror = () => {
-          img.classList.add('is-broken');
-          wrap.classList.add('show-fallback');
+          attemptIndex++;
+          if (attemptIndex < candidates.length) {
+            img.src = candidates[attemptIndex];
+          } else {
+            img.classList.add('is-broken');
+            wrap.classList.add('show-fallback');
+          }
         };
 
         if (img.complete) {
@@ -938,6 +1009,8 @@
 
       const wrap = document.getElementById('lightbox-wrap');
       const img = document.getElementById('lightbox-img');
+      const candidates = getCandidateUrls(item.baseName, item.preferredExt);
+      let attemptIndex = 0;
 
       document.getElementById('lightbox-badge').textContent = item.badge;
       document.getElementById('lightbox-title').textContent = item.title;
@@ -949,11 +1022,16 @@
         wrap.classList.remove('show-fallback');
       };
       img.onerror = () => {
-        img.classList.add('is-broken');
-        wrap.classList.add('show-fallback');
+        attemptIndex++;
+        if (attemptIndex < candidates.length) {
+          img.src = candidates[attemptIndex];
+        } else {
+          img.classList.add('is-broken');
+          wrap.classList.add('show-fallback');
+        }
       };
 
-      img.src = item.file;
+      img.src = item.resolvedUrl || candidates[0];
       document.getElementById('lightbox-modal').classList.remove('hidden');
     }
 
@@ -1114,7 +1192,7 @@
         btn.type = 'button';
         btn.className = 'smart-img-wrap group relative rounded-xl aspect-[3/4] border-2 border-transparent hover:border-burgundy focus:outline-none transition-all overflow-hidden';
         btn.innerHTML = `
-          <img src="${item.file}" alt="${choice.label}" class="w-full h-full object-cover object-top" />
+          <img src="${item.resolvedUrl || item.file}" data-base="${item.baseName}" alt="${choice.label}" class="w-full h-full object-cover object-top" />
           <div class="smart-fallback !p-1 text-[9px] font-bold">${choice.label}</div>
           <span class="absolute inset-x-0 bottom-0 bg-burgundy-dark/90 text-offwhite text-[9px] font-bold py-0.5 text-center">
             ${choice.label}
