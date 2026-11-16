@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chahat Aneja — Commercial & Editorial Modeling Portfolio</title>
+
+  <!-- Google Fonts: Cormorant Garamond editorial serif + Plus Jakarta Sans & Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            taupe: {
+              DEFAULT: '#B39F8D',
+              light: '#C4B2A2',
+              dark: '#998472'
+            },
+            cream: {
+              DEFAULT: '#EFE5D8',
+              light: '#F7EFE5',
+              dark: '#E2D4C3'
+            },
+            burgundy: {
+              DEFAULT: '#4D1418',
+              light: '#681C21',
+              dark: '#340B0E'
+            },
+            espresso: '#241412',
+            offwhite: '#FAF4EC'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+            body: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif']
+          },
+          borderRadius: {
+            'bento': '28px',
+            'bento-inner': '20px'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-taupe: #B39F8D;
+      --surface-cream: #EFE5D8;
+      --accent-burgundy: #4D1418;
+      --text-espresso: #241412;
+      --text-offwhite: #FAF4EC;
+    }
+
+    body {
+      background-color: var(--bg-taupe);
+      color: var(--text-espresso);
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Ambient floating editorial bokeh canvas */
+    #ambient-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Staggered scroll reveal */
+    .reveal-card {
+      opacity: 0;
+      transform: translateY(26px) scale(0.985);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-card.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Bento hover elevation */
+    .bento-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px -15px rgba(53, 8, 12, 0.3);
+    }
+
+    /* Continuous editorial marquee */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Smart Image Container & Graceful Fallback Styling */
+    .smart-img-wrap {
+      position: relative;
+      background: linear-gradient(145deg, #340B0E 0%, #4D1418 55%, #241412 100%);
+      overflow: hidden;
+    }
+
+    .smart-img-wrap img.is-broken {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smart-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      color: #FAF4EC;
+      background: radial-gradient(circle at top right, rgba(239, 229, 216, 0.14), transparent 65%),
+                  linear-gradient(155deg, #4D1418 0%, #241412 100%);
+    }
+
+    .smart-img-wrap.show-fallback .smart-fallback {
+      display: flex;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #998472;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4D1418;
+      border-radius: 999px;
+    }
+
+    /* Print Comp Card */
+    @media print {
+      body {
+        background: #EFE5D8 !important;
+      }
+      #ambient-canvas, #top-nav, #casting-game, #booking-section, .no-print {
+        display: none !important;
+      }
+      .bento-card {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-burgundy selection:text-offwhite">
+
+  <!-- Ambient Floating Editorial Bokeh Background -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Main Content Container -->
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-6">
+
+    <!-- 1. TOP BURGUNDY PILL NAVIGATION BAR (Exact Reference Hierarchy) -->
+    <header id="top-nav" class="sticky top-3 z-40">
+      <nav aria-label="Primary Portfolio Navigation" class="bg-burgundy text-offwhite rounded-full px-3 sm:px-5 py-2.5 shadow-xl shadow-burgundy-dark/25 border border-offwhite/15 flex items-center justify-between gap-2">
+        <!-- Home Circular Icon Button -->
+        <a href="#hero" aria-label="Back to Top" class="w-10 h-10 rounded-full border border-offwhite/40 flex items-center justify-center shrink-0 hover:bg-offwhite hover:text-burgundy transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5.5v-6h-5v6H4a1 1 0 01-1-1v-9.5z" />
+          </svg>
+        </a>
+
+        <!-- Navigation Links with Sub-labels -->
+        <div class="flex items-center justify-around flex-1 overflow-x-auto gap-3 sm:gap-5 px-2">
+          <a href="#carlton-proof" class="group text-left shrink-0">
+            <div class="text-xs sm:text-sm font-bold leading-tight text-offwhite group-hover:text-cream transition-colors">Campaigns</div>
+            <div class="text-[10px] sm:text-[11px] text-offwhite/65 leading-tight">Carlton London</div>
+          </a>
+          <a href="#carlton-proof" class="group text-left shrink-0">
+            <div class="text-xs sm:text-sm font-bold leading-tight text-offwhite group-hover:text-cream transition-colors">42.3K Proof</div>
+            <div class="text-[10px] sm:text-[11px] text-offwhite/65 leading-tight">Verified Reach</div>
+          </a>
+          <a href="#lookbook" class="group text-left shrink-0 hidden md:block">
+            <div class="text-xs sm:text-sm font-bold leading-tight text-offwhite group-hover:text-cream transition-colors">Editorial & Jewellery</div>
+            <div class="text-[10px] sm:text-[11px] text-offwhite/65 leading-tight">7 Archive Frames</div>
+          </a>
+          <a href="#lookbook" class="group text-left shrink-0 hidden sm:block">
+            <div class="text-xs sm:text-sm font-bold leading-tight text-offwhite group-hover:text-cream transition-colors">Current Lookbook</div>
+            <div class="text-[10px] sm:text-[11px] text-offwhite/65 leading-tight">5 Fresh Digitals</div>
+          </a>
+          <a href="#casting-game" class="group text-left shrink-0">
+            <div class="text-xs sm:text-sm font-bold leading-tight text-offwhite group-hover:text-cream transition-colors">Casting Game</div>
+            <div class="text-[10px] sm:text-[11px] text-offwhite/65 leading-tight">Cast the Look</div>
+          </a>
+        </div>
+
+        <!-- Search / Filter Modal Trigger -->
+        <button id="search-modal-btn" type="button" aria-label="Search & Filter Portfolio" class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 hover:bg-offwhite/15 transition-colors">
+          <svg class="w-5 h-5 text-offwhite" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="M20 20l-3.5-3.5" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- 2. HERO BENTO CARD (Soft Sand/Cream #E6DDD0 Matching Reference Layout) -->
+    <section id="hero" class="reveal-card bento-card bg-cream rounded-bento p-4 sm:p-6 shadow-lg">
+      <!-- Featured Carlton London Beauty Portrait Stage -->
+      <div class="smart-img-wrap relative rounded-bento-inner aspect-[4/4.2] sm:aspect-[16/9.5] w-full group" data-slot="carlton_main">
+        <img
+          src="images/carlton-main.jpg"
+          alt="Chahat Aneja — Carlton London Beauty Campaign Still"
+          class="w-full h-full object-cover object-[center_28%] transition-transform duration-700 group-hover:scale-105 cursor-pointer"
+          onclick="openLightboxBySlot('carlton_main')"
+        />
+
+        <!-- Graceful Fallback Overlay -->
+        <div class="smart-fallback">
+          <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-cream/15 text-cream mb-2">
+            Carlton London Beauty Campaign
+          </span>
+          <div class="font-serif text-lg sm:text-2xl font-bold">Chahat Aneja — Beauty Still</div>
+        </div>
+
+        <!-- Subtle Editorial Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-burgundy-dark/75 via-transparent to-burgundy-dark/20 pointer-events-none"></div>
+
+        <!-- Top Left Agency Status Pill -->
+        <div class="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 bg-burgundy/90 backdrop-blur-md text-offwhite px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2 border border-offwhite/15 shadow-md">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Open for Agency Representation & 2026 Bookings</span>
+        </div>
+
+        <!-- Bottom-Left Floating Picture-in-Picture Card (Matching Reference Layout) -->
+        <div
+          onclick="openLightboxBySlot('carlton_proof')"
+          class="smart-img-wrap hidden sm:block absolute bottom-4 left-4 w-32 h-32 md:w-36 md:h-36 rounded-2xl bg-burgundy p-1.5 shadow-2xl cursor-pointer hover:scale-105 transition-transform border border-offwhite/20"
+          data-slot="carlton_proof"
+          title="Click to verify 42.3K Views on @carltonlondonbeauty"
+        >
+          <img
+            src="images/carlton-proof.jpg"
+            alt="Carlton London 42.3K Views Proof"
+            class="w-full h-full object-cover object-right rounded-xl"
+          />
+          <div class="smart-fallback !p-2">
+            <span class="text-[9px] font-bold uppercase text-cream">42.3K Proof</span>
+          </div>
+          <span class="absolute bottom-2.5 right-2.5 bg-burgundy/95 text-offwhite text-[10px] font-bold px-2 py-0.5 rounded-full border border-offwhite/15">
+            42.3K Views
+          </span>
+        </div>
+
+        <!-- Bottom-Right Deep Burgundy Profile Pill (Exact Reference Placement) -->
+        <a href="#carlton-proof" class="absolute bottom-3.5 right-3.5 sm:bottom-4 sm:right-4 bg-burgundy hover:bg-burgundy-light transition-colors text-offwhite p-2 pr-4 rounded-2xl flex items-center gap-3 shadow-2xl border border-offwhite/15 max-w-[280px] sm:max-w-xs">
+          <div class="smart-img-wrap w-11 h-11 rounded-xl shrink-0 border border-offwhite/25" data-slot="recent_closeup">
+            <img
+              src="images/recent-closeup.jpg"
+              alt="Chahat Aneja 2026 Digital"
+              class="w-full h-full object-cover object-top"
+            />
+            <div class="smart-fallback !p-0.5 text-[8px] font-bold">2026</div>
+          </div>
+          <div class="min-w-0">
+            <div class="text-xs sm:text-sm font-bold truncate">Chahat Aneja</div>
+            <div class="text-[11px] text-offwhite/75 truncate">Carlton London Beauty Face</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Bottom Row of Hero Bento: 3 Circular Gallery Thumbnails + Editorial Bio -->
+      <div class="mt-5 grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+        <!-- 3 Circular Highlight Thumbnails (Matching Reference Image) -->
+        <div class="md:col-span-5 flex items-center justify-center sm:justify-start gap-3 sm:gap-4">
+          <button
+            type="button"
+            onclick="filterGallery('jewellery')"
+            class="group flex flex-col items-center gap-1.5 focus:outline-none"
+          >
+            <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="jewellery_earcuff">
+              <img
+                src="images/jewellery-earcuff.jpg"
+                alt="Jewellery Campaign Highlight"
+                class="w-full h-full rounded-full object-cover object-center"
+              />
+              <div class="smart-fallback rounded-full !p-1 text-[9px] font-bold">Jewellery</div>
+            </div>
+            <span class="text-[11px] font-bold text-espresso/85 group-hover:text-burgundy">Fine Jewellery</span>
+          </button>
+
+          <button
+            type="button"
+            onclick="filterGallery('lighting')"
+            class="group flex flex-col items-center gap-1.5 focus:outline-none"
+          >
+            <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="lighting_pearl">
+              <img
+                src="images/lighting-pearl.jpg"
+                alt="Editorial Spotlight & Pearl Highlight"
+                class="w-full h-full rounded-full object-cover object-[center_22%]"
+              />
+              <div class="smart-fallback rounded-full !p-1 text-[9px] font-bold">Editorial</div>
+            </div>
+            <span class="text-[11px] font-bold text-espresso/85 group-hover:text-burgundy">Editorial Spotlight</span>
+          </button>
+
+          <button
+            type="button"
+            onclick="filterGallery('current')"
+            class="group flex flex-col items-center gap-1.5 focus:outline-none"
+          >
+            <div class="smart-img-wrap w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-burgundy/15 group-hover:bg-burgundy transition-colors" data-slot="recent_waistcoat">
+              <img
+                src="images/recent-waistcoat.jpg"
+                alt="Current 2026 Lookbook Highlight"
+                class="w-full h-full rounded-full object-cover object-top"
+              />
+              <div class="smart-fallback rounded-full !p-1 text-[9px] font-bold">2026 Look</div>
+            </div>
+            <span class="text-[11px] font-bold text-espresso/85 group-hover:text-burgundy">2026 Digitals</span>
+          </button>
+        </div>
+
+        <!-- Editorial Bio Copy -->
+        <div class="md:col-span-7 space-y-1.5 text-left">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="font-serif text-3xl sm:text-4xl font-bold text-burgundy tracking-tight">Chahat Aneja</h1>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-burgundy/10 text-burgundy">
+              Beauty • Fine Jewellery • Editorial
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-espresso/85 font-body leading-relaxed">
+            Commercial beauty and editorial model with verified brand-launch reach—featuring as the face of <strong>Carlton London’s new makeup line</strong> in a launch reel that achieved <strong>42.3K+ organic views</strong> on <code>@carltonlondonbeauty</code>. Across <strong>14 curated portfolio frames</strong> spanning commercial beauty, fine jewellery macro, and editorial spotlight studies, paired with a dedicated <strong>1-year physical &amp; on-camera evolution</strong> captured in my latest unretouched 2026 digitals.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. QUANTIFIABLE METRICS BENTO STRIP (4 Agency-Ready KPIs) -->
+    <section aria-label="Quantifiable Modeling Impact" class="reveal-card grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bento-card bg-burgundy text-offwhite rounded-bento p-5 shadow-lg border border-offwhite/10 flex flex-col justify-between">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-cream/75">Verified Reach</div>
+        <div class="font-serif text-4xl sm:text-5xl font-bold text-offwhite my-1">42.3K+</div>
+        <p class="text-xs text-offwhite/80 font-body leading-snug">
+          Organic reel views on <strong>@carltonlondonbeauty</strong> ("Made For Every Hue" launch reel).
+        </p>
+      </div>
+
+      <div class="bento-card bg-cream rounded-bento p-5 shadow-lg border border-espresso/10 flex flex-col justify-between">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-burgundy">Launch Grid Rank</div>
+        <div class="font-serif text-4xl sm:text-5xl font-bold text-espresso my-1">#1 Reel</div>
+        <p class="text-xs text-espresso/80 font-body leading-snug">
+          Top-performing launch reel on the brand’s grid, outperforming surrounding reels by <strong>2x–20x</strong>.
+        </p>
+      </div>
+
+      <div class="bento-card bg-cream rounded-bento p-5 shadow-lg border border-espresso/10 flex flex-col justify-between">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-burgundy">Curated Lookbook</div>
+        <div class="font-serif text-4xl sm:text-5xl font-bold text-espresso my-1">14 Frames</div>
+        <p class="text-xs text-espresso/80 font-body leading-snug">
+          Across <strong>4 Shoot Verticals</strong>: Beauty Launch, Fine Jewellery, Editorial Lighting, &amp; 2026 Digitals.
+        </p>
+      </div>
+
+      <div class="bento-card bg-cream rounded-bento p-5 shadow-lg border border-espresso/10 flex flex-col justify-between">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-burgundy">Evolution</div>
+        <div class="font-serif text-4xl sm:text-5xl font-bold text-espresso my-1">1-Year Arc</div>
+        <p class="text-xs text-espresso/80 font-body leading-snug">
+          Dedicated physical, skin &amp; camera-presence refinement bridging archive shoots to fresh 2026 digitals.
+        </p>
+      </div>
+    </section>
+
+    <!-- AMBIENT SCROLLING EDITORIAL MARQUEE -->
+    <div class="reveal-card bg-burgundy text-offwhite rounded-full py-2.5 overflow-hidden shadow-md border border-offwhite/15">
+      <div class="marquee-track text-xs font-bold tracking-widest uppercase">
+        <span class="mx-6">★ CARLTON LONDON BEAUTY LAUNCH — 42.3K+ VERIFIED VIEWS</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">#1 TOP-PERFORMING LAUNCH REEL ON @CARLTONLONDONBEAUTY</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">STARTUP FINE JEWELLERY MACRO CAMPAIGN</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">5-FRAME EDITORIAL &amp; AMBER SPOTLIGHT LIGHTING SERIES</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">5 FRESH 2026 UNRETOUCHED DIGITALS &amp; POLAROIDS</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">★ CARLTON LONDON BEAUTY LAUNCH — 42.3K+ VERIFIED VIEWS</span>
+        <span class="mx-6">•</span>
+        <span class="mx-6">#1 TOP-PERFORMING LAUNCH REEL ON @CARLTONLONDONBEAUTY</span>
+        <span class="mx-6">•</span>
+      </div>
+    </div>
+
+    <!-- 4. CARLTON LONDON BEAUTY CAMPAIGN & VERIFIED 42.3K PROOF SECTION -->
+    <section id="carlton-proof" class="reveal-card bento-card bg-cream rounded-bento p-5 sm:p-7 shadow-lg space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-espresso/10 pb-4">
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-burgundy">Flagship Commercial Case Study • 1 Year Ago</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-espresso">Carlton London Beauty — Campaign & 42.3K Proof</h2>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-burgundy text-offwhite text-xs font-bold self-start sm:self-auto">
+          @carltonlondonbeauty
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left 7 Cols: Main Campaign Still -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-3">
+          <div class="smart-img-wrap relative rounded-bento-inner aspect-[16/10] w-full group cursor-pointer shadow-md" data-slot="carlton_main" onclick="openLightboxBySlot('carlton_main')">
+            <img
+              src="images/carlton-main.jpg"
+              alt="Chahat Aneja applying eyeshadow for Carlton London Beauty"
+              class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="smart-fallback">
+              <div class="font-serif text-lg font-bold">Carlton London Makeup Line Still</div>
+            </div>
+            <div class="absolute bottom-3 left-3 bg-burgundy/90 backdrop-blur-sm text-offwhite text-[11px] font-bold px-3 py-1 rounded-full">
+              Campaign Still • Soft Glam Application
+            </div>
+          </div>
+
+          <div class="bg-cream-light rounded-2xl p-4 border border-espresso/10 space-y-2">
+            <h3 class="text-base font-extrabold text-espresso">Campaign Context & Brand Impact</h3>
+            <p class="text-xs sm:text-sm text-espresso/85 font-body leading-relaxed">
+              Cast a year ago for the debut of <strong>Carlton London’s new beauty line</strong> (<code>@carltonlondonbeauty</code>). My featured launch reel—<em>"Made For Every Hue"</em>—became the <strong>#1 highest-viewed reel</strong> on their official launch grid with <strong>42.3K views</strong>, outperforming neighboring launch reels (598 to 22K views) by <strong>2x to 20x</strong> during the brand's critical early growth stage.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Deep Burgundy Frame with Official Instagram 42.3K Views Screenshot -->
+        <div class="lg:col-span-5 bg-burgundy text-offwhite rounded-bento-inner p-4 sm:p-5 flex flex-col justify-between space-y-4 shadow-xl">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <div class="text-[10px] font-extrabold uppercase tracking-widest text-cream/80">Official Analytics Proof</div>
+              <div class="text-sm font-bold text-offwhite">@carltonlondonbeauty Reel Grid</div>
+            </div>
+            <button
+              type="button"
+              onclick="openLightboxBySlot('carlton_proof')"
+              class="bg-cream hover:bg-offwhite text-burgundy text-[11px] font-extrabold px-3 py-1.5 rounded-full transition-colors shrink-0"
+            >
+              Zoom Proof 🔍
+            </button>
+          </div>
+
+          <div class="smart-img-wrap relative rounded-2xl aspect-[4/4.6] w-full cursor-pointer group border border-offwhite/15" data-slot="carlton_proof" onclick="openLightboxBySlot('carlton_proof')">
+            <img
+              src="images/carlton-proof.jpg"
+              alt="Screenshot of @carltonlondonbeauty official Instagram reels grid showing 42.3K views"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="smart-fallback">
+              <div class="font-serif text-base font-bold">42.3K Views Instagram Proof</div>
+            </div>
+            <div class="absolute bottom-3 inset-x-3 bg-burgundy-dark/90 backdrop-blur-md text-offwhite p-2.5 rounded-xl border border-offwhite/15 flex items-center justify-between">
+              <span class="text-[11px] font-semibold">"Made For Every Hue"</span>
+              <span class="text-xs font-extrabold text-cream">👁 42.3K Views</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onclick="openLightboxBySlot('carlton_proof')"
+            class="w-full bg-cream hover:bg-offwhite text-espresso font-bold text-xs py-2.5 px-4 rounded-xl transition-colors"
+          >
+            Inspect Full-Resolution Screenshot
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. COMPLETE CATEGORIZED LOOKBOOK (ALL 14 IMAGES) -->
+    <section id="lookbook" class="reveal-card bento-card bg-cream rounded-bento p-5 sm:p-7 shadow-lg space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-burgundy">Complete 14-Frame Portfolio</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-espresso">Categorized Lookbook &amp; 2026 Digitals</h2>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div id="gallery-filters" class="flex flex-wrap gap-2">
+          <button type="button" data-filter="all" class="filter-btn active px-3.5 py-1.5 rounded-full text-xs font-bold bg-burgundy text-offwhite transition-colors">
+            All (14)
+          </button>
+          <button type="button" data-filter="carlton" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso hover:bg-burgundy/15 transition-colors">
+            Carlton London &amp; Proof (2)
+          </button>
+          <button type="button" data-filter="jewellery" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso hover:bg-burgundy/15 transition-colors">
+            Startup Jewellery Shoot (2)
+          </button>
+          <button type="button" data-filter="lighting" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso hover:bg-burgundy/15 transition-colors">
+            College Editorial &amp; Lighting (5)
+          </button>
+          <button type="button" data-filter="current" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso hover:bg-burgundy/15 transition-colors">
+            Recent Selfies &amp; Current Look (5)
+          </button>
+        </div>
+      </div>
+
+      <!-- Responsive Grid Rendering All 14 Photos -->
+      <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Populated dynamically from portfolioItems array so every slot, lightbox, fallback, and file uploader stays 100% synchronized -->
+      </div>
+    </section>
+
+    <!-- 6. BOTTOM BENTO ROW: AGENCY BOOKING & INTERACTIVE CASTING GAME ("CAST THE LOOK") -->
+    <section id="casting-game" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+      <!-- Left Card (Cream Bento): Comp Card Summary & Agency Booking -->
+      <div id="booking-section" class="reveal-card bento-card lg:col-span-6 bg-cream rounded-bento p-5 sm:p-6 shadow-lg flex flex-col justify-between space-y-5">
+        <div>
+          <div class="bg-burgundy text-offwhite rounded-full px-4 py-2 flex items-center justify-between">
+            <span class="text-xs font-bold tracking-wide">Agency Representation & Casting Desk</span>
+            <span class="text-[11px] text-cream/85">Gurugram / Delhi NCR</span>
+          </div>
+
+          <h2 class="font-serif text-2xl font-bold text-espresso mt-4">Book Chahat Aneja</h2>
+          <p class="text-xs sm:text-sm text-espresso/80 font-body mt-1 leading-relaxed">
+            Ready for commercial skincare & cosmetics campaigns, fine jewellery lookbooks, editorial print, and digital brand reels.
+          </p>
+
+          <!-- Quick Copy Booking Contact Strip -->
+          <div class="mt-3.5 bg-cream-light rounded-2xl p-3 border border-espresso/10 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div class="text-[10px] font-bold uppercase tracking-wider text-burgundy">Direct Casting Contact</div>
+              <div id="booking-email-text" class="text-xs sm:text-sm font-extrabold text-espresso">chahat.aneja.bookings@talent.in</div>
+            </div>
+            <div class="flex items-center gap-2 no-print">
+              <button type="button" onclick="copyBookingEmail()" class="bg-burgundy hover:bg-burgundy-light text-offwhite text-[11px] font-bold px-3 py-1.5 rounded-lg transition-colors">
+                Copy Email
+              </button>
+              <button type="button" onclick="window.print()" class="bg-espresso/10 hover:bg-espresso/20 text-espresso text-[11px] font-bold px-3 py-1.5 rounded-lg transition-colors">
+                Print Comp Card
+              </button>
+            </div>
+          </div>
+          <div id="copy-toast" class="hidden mt-2 text-[11px] font-bold text-emerald-900">
+            ✓ Booking email copied to clipboard!
+          </div>
+
+          <!-- Agency Inquiry Form -->
+          <form id="agency-form" class="mt-4 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                type="text"
+                required
+                placeholder="Agency / Brand Name"
+                class="w-full rounded-xl bg-cream-light border border-espresso/15 px-3.5 py-2.5 text-xs sm:text-sm text-espresso placeholder:text-espresso/45 focus:outline-none focus:border-burgundy"
+              />
+              <input
+                type="email"
+                required
+                placeholder="Casting Director Email"
+                class="w-full rounded-xl bg-cream-light border border-espresso/15 px-3.5 py-2.5 text-xs sm:text-sm text-espresso placeholder:text-espresso/45 focus:outline-none focus:border-burgundy"
+              />
+            </div>
+
+            <select class="w-full rounded-xl bg-cream-light border border-espresso/15 px-3.5 py-2.5 text-xs sm:text-sm text-espresso focus:outline-none focus:border-burgundy">
+              <option>Brief: Commercial Beauty & Cosmetics Shoot</option>
+              <option>Brief: Fine Jewellery & Accessories Campaign</option>
+              <option>Brief: Editorial / Studio Lookbook</option>
+              <option>Brief: Modelling Agency Representation</option>
+            </select>
+
+            <button
+              type="submit"
+              class="w-full bg-burgundy hover:bg-burgundy-light text-offwhite font-bold text-xs sm:text-sm py-3 px-5 rounded-xl transition-colors shadow-md"
+            >
+              Submit Casting / Representation Inquiry
+            </button>
+          </form>
+
+          <div id="form-feedback" class="hidden mt-3 p-3 rounded-xl bg-emerald-900/15 border border-emerald-900/30 text-emerald-950 text-xs font-semibold">
+            ✓ Inquiry received! Thank you for reviewing Chahat Aneja’s portfolio.
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-espresso/10 flex items-center justify-between text-[11px] text-espresso/75">
+          <span><strong>Archive:</strong> Carlton London, Jewellery, Lighting</span>
+          <span class="font-bold text-burgundy">Current Look: 2026 Digitals</span>
+        </div>
+      </div>
+
+      <!-- Right Card (Deep Burgundy Bento): Interactive Casting Mini-Game ("Cast the Look") -->
+      <div class="reveal-card bento-card lg:col-span-6 bg-burgundy text-offwhite rounded-bento p-5 sm:p-6 shadow-xl flex flex-col justify-between space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-cream/80">Interactive Agency Challenge</span>
+            <h2 class="font-serif text-xl sm:text-2xl font-bold text-offwhite">Cast the Look</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-burgundy-light border border-offwhite/15 text-cream font-bold text-xs px-3 py-1.5 rounded-full">
+              Streak: <span id="game-streak">0</span>🔥
+            </div>
+            <div class="bg-cream text-burgundy font-extrabold text-xs px-3 py-1.5 rounded-full shadow">
+              Score: <span id="game-score">0</span>/5
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Prompt Box -->
+        <div class="bg-cream text-espresso rounded-2xl p-4 space-y-3 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-bold text-burgundy">
+              <span id="round-label">CLIENT BRIEF 1 OF 5</span>
+              <span id="game-status-tag">Tap matching frame</span>
+            </div>
+            <p id="brief-question" class="text-xs sm:text-sm font-bold text-espresso mt-1.5 leading-snug"></p>
+          </div>
+
+          <!-- 4 Visual Choice Cards -->
+          <div id="game-options" class="grid grid-cols-4 gap-2 pt-1"></div>
+
+          <!-- Feedback / Next Button -->
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <p id="game-feedback" class="text-[11px] font-semibold text-espresso/80"></p>
+            <button
+              id="game-next-btn"
+              type="button"
+              onclick="nextRound()"
+              class="hidden shrink-0 bg-burgundy text-offwhite text-xs font-bold px-3.5 py-1.5 rounded-full hover:bg-burgundy-light transition-colors"
+            >
+              Next Brief →
+            </button>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-offwhite/75 flex items-center justify-between">
+          <span>Test how Chahat fits across 5 client briefs</span>
+          <button type="button" onclick="resetGame()" class="underline hover:text-offwhite font-semibold">Restart Game</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-espresso/90 pt-2 pb-4 font-semibold">
+      © 2026 Chahat Aneja • Commercial Beauty, Fine Jewellery & Editorial Modeling Portfolio
+    </footer>
+  </div>
+
+  <!-- LIGHTBOX MODAL FOR FULL-SCREEN IMAGE & PROOF INSPECTION -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-burgundy-dark/92 backdrop-blur-md flex items-center justify-center p-4" onclick="closeLightbox(event)">
+    <div class="bg-cream text-espresso rounded-bento max-w-2xl w-full overflow-hidden shadow-2xl border border-offwhite/20" onclick="event.stopPropagation()">
+      <div class="smart-img-wrap relative bg-burgundy-dark max-h-[68vh] min-h-[280px] flex items-center justify-center overflow-hidden" id="lightbox-wrap">
+        <img id="lightbox-img" src="" alt="Portfolio Inspection" class="max-h-[68vh] w-auto object-contain" />
+        <div class="smart-fallback">
+          <div class="font-serif text-lg font-bold" id="lightbox-fallback-title">Portfolio Frame</div>
+        </div>
+        <button
+          type="button"
+          onclick="closeLightbox()"
+          aria-label="Close Preview"
+          class="absolute top-3 right-3 w-9 h-9 rounded-full bg-burgundy text-offwhite font-bold flex items-center justify-center hover:bg-burgundy-light shadow-lg"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="p-4 sm:p-5">
+        <span id="lightbox-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-burgundy"></span>
+        <h3 id="lightbox-title" class="font-serif text-lg sm:text-xl font-bold text-espresso"></h3>
+        <p id="lightbox-desc" class="text-xs sm:text-sm text-espresso/85 font-body mt-1"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH / FILTER MODAL (Triggered by Top-Right Magnifying Glass) -->
+  <div id="search-modal" class="fixed inset-0 z-50 hidden bg-burgundy-dark/85 backdrop-blur-sm flex items-start justify-center pt-20 p-4" onclick="closeSearchModal(event)">
+    <div class="bg-cream text-espresso rounded-bento max-w-lg w-full p-5 shadow-2xl border border-offwhite/20 space-y-4" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between">
+        <h3 class="font-serif text-xl font-bold text-burgundy">Quick Portfolio Search & Filter</h3>
+        <button type="button" onclick="closeSearchModal()" class="w-8 h-8 rounded-full bg-burgundy text-offwhite text-xs font-bold">✕</button>
+      </div>
+      <input
+        type="text"
+        id="portfolio-search-input"
+        placeholder="Search 'Carlton London', '42.3K', 'Pearl', 'Jewellery', 'Mirror', '2026'..."
+        class="w-full rounded-xl bg-cream-light border border-espresso/20 px-4 py-2.5 text-sm text-espresso focus:outline-none focus:border-burgundy"
+      />
+      <div class="flex flex-wrap gap-2">
+        <button type="button" onclick="applyQuickFilter('all')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-burgundy text-offwhite">All 14 Photos</button>
+        <button type="button" onclick="applyQuickFilter('carlton')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso">Carlton London &amp; 42.3K Proof (2)</button>
+        <button type="button" onclick="applyQuickFilter('jewellery')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso">Startup Jewellery (2)</button>
+        <button type="button" onclick="applyQuickFilter('lighting')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso">College Editorial &amp; Lighting (5)</button>
+        <button type="button" onclick="applyQuickFilter('current')" class="px-3 py-1.5 rounded-full text-xs font-bold bg-espresso/10 text-espresso">2026 Current Look (5)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: Categorized 14-Photo Lookbook, Lightbox, Ambient Bokeh & Casting Game -->
+  <script>
+    /* 1. MASTER PORTFOLIO DATA (Clean GitHub Pages Relative Paths inside /images/) */
+    const portfolioItems = [
+      // 1. Carlton London Beauty Campaign & Views Proof (2)
+      {
+        slot: 'carlton_main',
+        file: 'images/carlton-main.jpg',
+        category: 'carlton',
+        badge: 'Carlton London • 1 Yr Ago',
+        badgeStyle: 'bg-burgundy text-offwhite',
+        title: 'Carlton London Beauty Launch',
+        subtitle: 'Commercial Beauty Campaign Still',
+        desc: 'Featured on-camera talent for Carlton London’s new makeup line launch campaign (1 year ago) — soft peach/coral eyeshadow brush application in a clean square-neck top.'
+      },
+      {
+        slot: 'carlton_proof',
+        file: 'images/carlton-proof.jpg',
+        category: 'carlton',
+        badge: '42.3K Views Proof',
+        badgeStyle: 'bg-burgundy text-offwhite',
+        title: '@carltonlondonbeauty Grid Proof',
+        subtitle: '#1 Launch Reel (42.3K Views)',
+        desc: 'Official Instagram reel grid proof from @carltonlondonbeauty showing 42.3K views on the "Made For Every Hue" reel—ranking as the #1 highest-performing reel on their launch page.'
+      },
+
+      // 2. Startup Jewellery Shoot (2)
+      {
+        slot: 'jewellery_earcuff',
+        file: 'images/jewellery-earcuff.jpg',
+        category: 'jewellery',
+        badge: 'Jewellery Shoot • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Silver-Ruby Floral Ear Cuff Profile',
+        subtitle: 'Startup Fine Jewellery Brand',
+        desc: 'Macro editorial side profile highlighting a silver-ruby floral ear cuff against a moody charcoal backdrop.'
+      },
+      {
+        slot: 'jewellery_heartstud',
+        file: 'images/jewellery-heartstud.jpg',
+        category: 'jewellery',
+        badge: 'Jewellery Shoot • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Minimalist Silver Heart Stud',
+        subtitle: 'Startup Fine Jewellery Brand',
+        desc: 'Clean daylight studio profile featuring a minimalist silver heart stud and radiant natural skin texture.'
+      },
+
+      // 3. College Editorial & Lighting Project (5)
+      {
+        slot: 'lighting_double',
+        file: 'images/lighting-double.jpg',
+        category: 'lighting',
+        badge: 'Editorial & Lighting • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Red & Cobalt Double-Exposure',
+        subtitle: 'College Studio Lighting Project',
+        desc: 'Experimental double-exposure studio portrait combining crimson and cobalt blue gel lighting.'
+      },
+      {
+        slot: 'lighting_sunset_one',
+        file: 'images/lighting-sunset-1.jpg',
+        category: 'lighting',
+        badge: 'Editorial & Lighting • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Warm Sunset Halo Portrait I',
+        subtitle: 'College Studio Lighting Project',
+        desc: 'Poised seated studio portrait framed by warm amber sunset projection lighting in a square-neck top.'
+      },
+      {
+        slot: 'lighting_sunset_two',
+        file: 'images/lighting-sunset-2.jpg',
+        category: 'lighting',
+        badge: 'Editorial & Lighting • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Amber Spotlight Silhouette II',
+        subtitle: 'College Studio Lighting Project',
+        desc: 'Secondary framing from the warm amber sunset spotlight studio portrait series showcasing clean posture and jawline.'
+      },
+      {
+        slot: 'lighting_pearl',
+        file: 'images/lighting-pearl.jpg',
+        category: 'lighting',
+        badge: 'Editorial & Lighting • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Pearl Cheek & Amber Spotlight',
+        subtitle: 'College Editorial Floor Pose',
+        desc: 'Editorial floor pose under warm amber spotlight featuring pearl cheek embellishments and a black cut-out dress.'
+      },
+      {
+        slot: 'lighting_mirror_knit',
+        file: 'images/lighting-mirror-knit.jpg',
+        category: 'lighting',
+        badge: 'Editorial & Lighting • Archive',
+        badgeStyle: 'bg-espresso/85 text-offwhite',
+        title: 'Editorial Mirror Reflection in Knitwear',
+        subtitle: 'College Studio Editorial Study',
+        desc: 'Moody editorial mirror reflection shot in sheer textured knitwear, highlighting expressive eye contact and framing.'
+      },
+
+      // 4. Recent Selfies & Current Look (5)
+      {
+        slot: 'recent_closeup',
+        file: 'images/recent-closeup.jpg',
+        category: 'current',
+        badge: 'Latest 2026 Look',
+        badgeStyle: 'bg-emerald-900 text-offwhite',
+        title: '2026 Natural Evening Portrait',
+        subtitle: 'Unretouched Current Face Digital',
+        desc: 'Unretouched evening portrait highlighting clear skin, natural brows, and voluminous hair after 1 year of dedicated self-work.'
+      },
+      {
+        slot: 'recent_waistcoat',
+        file: 'images/recent-waistcoat.jpg',
+        category: 'current',
+        badge: 'Latest 2026 Look',
+        badgeStyle: 'bg-emerald-900 text-offwhite',
+        title: '2026 Structured Black Waistcoat',
+        subtitle: 'Current Jawline & Hair Texture',
+        desc: 'Close-up mirror portrait in a structured black waistcoat showing current jawline definition, curls, and camera confidence.'
+      },
+      {
+        slot: 'recent_fulllength',
+        file: 'images/recent-fulllength.jpg',
+        category: 'current',
+        badge: 'Latest 2026 Look',
+        badgeStyle: 'bg-emerald-900 text-offwhite',
+        title: '2026 Full-Length Proportions',
+        subtitle: 'Current Silhouette & Posture Check',
+        desc: 'Full-length silhouette and posture digital in an embroidered black top and flared trousers following 1 year of fitness refinement.'
+      },
+      {
+        slot: 'recent_redmirror',
+        file: 'images/recent-redmirror.jpg',
+        category: 'current',
+        badge: 'Latest 2026 Look',
+        badgeStyle: 'bg-emerald-900 text-offwhite',
+        title: '2026 Contemporary Street Angle',
+        subtitle: 'Current Casual Proportions',
+        desc: 'Candid full-body/mid-length lifestyle angle in a cropped brown tie-front top and denim.'
+      },
+      {
+        slot: 'recent_indoor_wavy',
+        file: 'images/recent-indoor-wavy.jpg',
+        category: 'current',
+        badge: 'Latest 2026 Look',
+        badgeStyle: 'bg-emerald-900 text-offwhite',
+        title: '2026 Natural Daylight Facial Angle',
+        subtitle: 'Unretouched Indoor Digital',
+        desc: 'Natural indoor unretouched facial angle in a black wrap top showcasing clear complexion, symmetry, and long wavy hair.'
+      }
+    ];
+
+    /* 2. RENDER ALL 14 LOOKBOOK CARDS */
+    function renderLookbookGrid() {
+      const grid = document.getElementById('portfolio-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      portfolioItems.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item smart-img-wrap group relative rounded-2xl aspect-[3/4] cursor-pointer shadow-md border border-espresso/10';
+        card.dataset.category = item.category;
+        card.dataset.slot = item.slot;
+        card.dataset.search = `${item.title} ${item.subtitle} ${item.badge} ${item.desc}`.toLowerCase();
+        card.onclick = () => openLightboxBySlot(item.slot);
+
+        card.innerHTML = `
+          <img
+            src="${item.file}"
+            alt="${item.title}"
+            loading="lazy"
+            class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          />
+          <div class="smart-fallback">
+            <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cream/15 text-cream mb-1.5">
+              ${item.badge}
+            </span>
+            <div class="font-serif text-base font-bold leading-tight">${item.title}</div>
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-burgundy-dark/85 via-transparent to-burgundy-dark/25 pointer-events-none"></div>
+          <span class="absolute top-2.5 left-2.5 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${item.badgeStyle} shadow">
+            ${item.badge}
+          </span>
+          <div class="absolute bottom-3 left-3 right-3 text-offwhite pointer-events-none">
+            <div class="text-xs font-bold leading-tight">${item.title}</div>
+            <div class="text-[10px] text-offwhite/75 mt-0.5">${item.subtitle}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      bindImageHandlers();
+    }
+
+    /* 3. GRACEFUL IMAGE FALLBACK HANDLER */
+    function bindImageHandlers() {
+      document.querySelectorAll('.smart-img-wrap').forEach((wrap) => {
+        const img = wrap.querySelector('img');
+        if (!img) return;
+
+        img.onload = () => {
+          img.classList.remove('is-broken');
+          wrap.classList.remove('show-fallback');
+        };
+
+        img.onerror = () => {
+          img.classList.add('is-broken');
+          wrap.classList.add('show-fallback');
+        };
+
+        if (img.complete) {
+          if (img.naturalWidth === 0) {
+            img.onerror();
+          } else {
+            img.onload();
+          }
+        }
+      });
+    }
+
+    /* 4. LIGHTBOX MODAL CONTROLS */
+    function openLightboxBySlot(slot) {
+      const item = portfolioItems.find((p) => p.slot === slot);
+      if (!item) return;
+
+      const wrap = document.getElementById('lightbox-wrap');
+      const img = document.getElementById('lightbox-img');
+
+      document.getElementById('lightbox-badge').textContent = item.badge;
+      document.getElementById('lightbox-title').textContent = item.title;
+      document.getElementById('lightbox-desc').textContent = item.desc;
+      document.getElementById('lightbox-fallback-title').textContent = item.title;
+
+      img.onload = () => {
+        img.classList.remove('is-broken');
+        wrap.classList.remove('show-fallback');
+      };
+      img.onerror = () => {
+        img.classList.add('is-broken');
+        wrap.classList.add('show-fallback');
+      };
+
+      img.src = item.file;
+      document.getElementById('lightbox-modal').classList.remove('hidden');
+    }
+
+    function closeLightbox(event) {
+      if (!event || event.target.id === 'lightbox-modal') {
+        document.getElementById('lightbox-modal').classList.add('hidden');
+      }
+    }
+
+    /* 5. FILTER & SEARCH MODAL CONTROLS */
+    function filterGallery(category) {
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        if (btn.dataset.filter === category) {
+          btn.classList.remove('bg-espresso/10', 'text-espresso');
+          btn.classList.add('bg-burgundy', 'text-offwhite');
+        } else {
+          btn.classList.remove('bg-burgundy', 'text-offwhite');
+          btn.classList.add('bg-espresso/10', 'text-espresso');
+        }
+      });
+
+      document.querySelectorAll('.gallery-item').forEach((card) => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('lookbook').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => filterGallery(btn.dataset.filter));
+    });
+
+    document.getElementById('search-modal-btn').addEventListener('click', () => {
+      document.getElementById('search-modal').classList.remove('hidden');
+      document.getElementById('portfolio-search-input').focus();
+    });
+
+    function closeSearchModal(event) {
+      if (!event || event.target.id === 'search-modal') {
+        document.getElementById('search-modal').classList.add('hidden');
+      }
+    }
+
+    function applyQuickFilter(category) {
+      closeSearchModal();
+      filterGallery(category);
+    }
+
+    document.getElementById('portfolio-search-input').addEventListener('input', function (e) {
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('.gallery-item').forEach((card) => {
+        if (!q || card.dataset.search.includes(q)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      if (q) {
+        document.getElementById('lookbook').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeSearchModal();
+      }
+    });
+
+    /* 6. AGENCY BOOKING & COPY EMAIL */
+    function copyBookingEmail() {
+      const email = document.getElementById('booking-email-text').textContent;
+      const temp = document.createElement('textarea');
+      temp.value = email;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+
+      const toast = document.getElementById('copy-toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    document.getElementById('agency-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('form-feedback').classList.remove('hidden');
+      this.reset();
+    });
+
+    /* 7. INTERACTIVE CASTING DIRECTOR MINI-GAME ("CAST THE LOOK") */
+    const gameRounds = [
+      {
+        brief: '"Cosmetics launch director needs soft-glam coral eyeshadow application that drove 42.3K+ reel views."',
+        correctSlot: 'carlton_main',
+        explanation: 'Spot on! Carlton London’s beauty launch still—backed by 42.3K+ official reel views.'
+      },
+      {
+        brief: '"Brand manager asks for verified social proof showing #1 launch reel performance on @carltonlondonbeauty."',
+        correctSlot: 'carlton_proof',
+        explanation: 'Verified! The @carltonlondonbeauty grid screenshot proves 42.3K views on "Made For Every Hue".'
+      },
+      {
+        brief: '"Fine jewellery startup wants a macro side-profile highlighting a silver-ruby floral ear cuff."',
+        correctSlot: 'jewellery_earcuff',
+        explanation: 'Nailed it! Commercial profile shot crafted for an emerging fine jewellery brand.'
+      },
+      {
+        brief: '"Editorial magazine director requests an amber spotlight floor pose with pearl cheek embellishments."',
+        correctSlot: 'lighting_pearl',
+        explanation: 'Exact match! Pearl-embellished amber spotlight study from the 5-frame editorial lighting series.'
+      },
+      {
+        brief: '"Casting agent requests an unretouched 2026 close-up showing Chahat’s current post-transformation look."',
+        correctSlot: 'recent_waistcoat',
+        explanation: 'Perfect! Latest 2026 mirror digital reflecting her current jawline, hair texture, and camera presence.'
+      }
+    ];
+
+    const gameOptionSlots = [
+      { slot: 'carlton_main', label: 'Carlton Beauty' },
+      { slot: 'jewellery_earcuff', label: 'Ruby Cuff' },
+      { slot: 'lighting_pearl', label: 'Pearl Spotlight' },
+      { slot: 'recent_waistcoat', label: '2026 Waistcoat' }
+    ];
+
+    let currentRound = 0;
+    let score = 0;
+    let streak = 0;
+    let roundAnswered = false;
+
+    function renderGameRound() {
+      const round = gameRounds[currentRound];
+      roundAnswered = false;
+
+      document.getElementById('round-label').textContent = `CLIENT BRIEF ${currentRound + 1} OF ${gameRounds.length}`;
+      document.getElementById('game-status-tag').textContent = 'Tap matching frame';
+      document.getElementById('brief-question').textContent = round.brief;
+      document.getElementById('game-feedback').textContent = 'Select the portfolio look that best answers the client brief.';
+      document.getElementById('game-next-btn').classList.add('hidden');
+
+      let choices = [...gameOptionSlots];
+      if (!choices.some((c) => c.slot === round.correctSlot)) {
+        choices[1] = { slot: round.correctSlot, label: '42.3K Proof' };
+      }
+
+      const container = document.getElementById('game-options');
+      container.innerHTML = '';
+
+      choices.forEach((choice) => {
+        const item = portfolioItems.find((p) => p.slot === choice.slot);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'smart-img-wrap group relative rounded-xl aspect-[3/4] border-2 border-transparent hover:border-burgundy focus:outline-none transition-all overflow-hidden';
+        btn.innerHTML = `
+          <img src="${item.file}" alt="${choice.label}" class="w-full h-full object-cover object-top" />
+          <div class="smart-fallback !p-1 text-[9px] font-bold">${choice.label}</div>
+          <span class="absolute inset-x-0 bottom-0 bg-burgundy-dark/90 text-offwhite text-[9px] font-bold py-0.5 text-center">
+            ${choice.label}
+          </span>
+        `;
+        btn.addEventListener('click', () => handleGameChoice(choice.slot, btn));
+        container.appendChild(btn);
+      });
+
+      bindImageHandlers();
+    }
+
+    function handleGameChoice(selectedSlot, btnEl) {
+      if (roundAnswered) return;
+      roundAnswered = true;
+
+      const round = gameRounds[currentRound];
+      const isCorrect = selectedSlot === round.correctSlot;
+
+      if (isCorrect) {
+        score++;
+        streak++;
+        document.getElementById('game-score').textContent = score;
+        document.getElementById('game-streak').textContent = streak;
+        btnEl.classList.add('border-emerald-600', 'ring-2', 'ring-emerald-600');
+        document.getElementById('game-status-tag').textContent = '✓ Cast Confirmed!';
+        document.getElementById('game-feedback').textContent = round.explanation;
+      } else {
+        streak = 0;
+        document.getElementById('game-streak').textContent = streak;
+        btnEl.classList.add('border-red-600', 'opacity-70');
+        document.getElementById('game-status-tag').textContent = 'Casting Note';
+        document.getElementById('game-feedback').textContent = round.explanation;
+      }
+
+      const nextBtn = document.getElementById('game-next-btn');
+      nextBtn.classList.remove('hidden');
+      nextBtn.textContent = currentRound < gameRounds.length - 1 ? 'Next Brief →' : 'Final Verdict';
+    }
+
+    function nextRound() {
+      if (currentRound < gameRounds.length - 1) {
+        currentRound++;
+        renderGameRound();
+      } else {
+        document.getElementById('round-label').textContent = 'CASTING COMPLETE';
+        document.getElementById('game-status-tag').textContent = `${score}/5 Matched`;
+        document.getElementById('brief-question').textContent =
+          `You matched ${score} out of 5 briefs! Chahat brings proven 42.3K+ brand launch reach across 14 curated portfolio frames.`;
+        document.getElementById('game-options').innerHTML = `
+          <div class="col-span-4 bg-burgundy/10 rounded-xl p-3 text-center">
+            <div class="text-xs font-extrabold text-burgundy">★ Agency Readiness: Commercial, Jewellery & Editorial</div>
+            <div class="text-[11px] text-espresso/80 mt-0.5">Use the booking desk on the left to request auditions or a comp card.</div>
+          </div>
+        `;
+        document.getElementById('game-feedback').textContent = 'Ready for 2026 representation.';
+        document.getElementById('game-next-btn').classList.add('hidden');
+      }
+    }
+
+    function resetGame() {
+      currentRound = 0;
+      score = 0;
+      streak = 0;
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-streak').textContent = '0';
+      renderGameRound();
+    }
+
+    /* 9. AMBIENT EDITORIAL BOKEH CANVAS & SCROLL REVEAL */
+    (function initAmbientCanvas() {
+      const canvas = document.getElementById('ambient-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+      let scrollVelocity = 0;
+      let lastScrollY = window.scrollY;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        scrollVelocity = Math.min(Math.max((y - lastScrollY) * 0.14, -6), 6);
+        lastScrollY = y;
+      }, { passive: true });
+
+      const orbs = Array.from({ length: 18 }, (_, i) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 28 + Math.random() * 68,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        color: i % 2 === 0 ? 'rgba(78, 14, 19, 0.075)' : 'rgba(230, 221, 208, 0.16)'
+      }));
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        scrollVelocity *= 0.92;
+
+        for (const orb of orbs) {
+          orb.x += orb.vx;
+          orb.y += orb.vy - scrollVelocity * 0.45;
+
+          if (orb.x < -orb.r) orb.x = width + orb.r;
+          if (orb.x > width + orb.r) orb.x = -orb.r;
+          if (orb.y < -orb.r) orb.y = height + orb.r;
+          if (orb.y > height + orb.r) orb.y = -orb.r;
+
+          ctx.beginPath();
+          ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+          ctx.fillStyle = orb.color;
+          ctx.fill();
+        }
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('load', animate);
+    })();
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('is-visible');
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    document.querySelectorAll('.reveal-card').forEach((el) => revealObserver.observe(el));
+
+    /* Initialize Lookbook & Game */
+    renderLookbookGrid();
+    renderGameRound();
+  </script>
+</body>
+</html>
